@@ -1,7 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import $ from 'jquery'
-
 let url = "https://raw.githubusercontent.com/hexschool/w3hexschool-API/master/data.json"
 let sortdata = {}
 let blogList = []
@@ -44,24 +40,25 @@ function clean(){
   $('table').remove()
   $('.page-number-list').remove()
   $('.back2author').remove()
+  $('.author-page-number-list').remove()
 }
 
 // 渲染列表頁面
 function renderAll(a,data){
   clean()
-  $('article').append('<table id="archive" class="table table-striped"><thead class="table-wrap"></thead></table>')
+  $('article').append('<table id="archive" class="table table-striped"><thead class="table-wrap"></thead><tbody></tbody></table>')
   $('article').append('<div class="page-number-list"></div>')
-  $('.table-wrap').append('<tr class="table-info"><td scope="col">時間</td><td scope="col">標題</td></tr>')
+  $('.table-wrap').append('<tr class="table-info"><th scope="col">時間</th><th scope="col">標題</th></tr>')
   let num = a * 20
   for (let i = num; i < Math.min(num + 20, data.length); i += 1){
     let row = $('<tr></tr>')
     row.append(`<td>${data[i].time}</td>`)
     row.append(`<td><a href='${data[i].blogList[0].url}'>${data[i].blogList[0].title}</a></td>`)
-    $('.table-wrap').append(row)  
+    $('tbody').append(row)  
   }
   let page_num = Math.ceil(data.length / 20)
   for (let i = 0; i < page_num; i += 1){
-    $('.page-number-list').append(`<button id=page_${i} class="btn btn-outline-info">${i+1}</button>`)
+    $('.page-number-list').append(`<button id=page_${i} class="article_page btn btn-outline-info">${i+1}</button>`)
   }
 }
 
@@ -83,13 +80,13 @@ function search(a,data){
 }
 function renderSearch(data){
   clean()
-  $('article').append('<table id="archive" class="table table-striped"><thead class="table-wrap"></thead></table>')
+  $('article').append('<table id="archive" class="table table-striped"><thead class="table-wrap"><tbody></tbody></thead></table>')
   $('.table-wrap').append('<tr class="table-info"><td scope="col">時間</td><td scope="col">標題</td></tr>')
   for (let i = 0; i < data.length; i += 1){
     let row = $('<tr></tr>')
     row.append(`<td>${data[i].time}</td>`)
     row.append(`<td><a href='${data[i].url}'>${data[i].title}</a></td>`)
-    $('.table-wrap').append(row)
+    $('tbody').append(row)
   }
 }
 
@@ -112,17 +109,20 @@ function collectBlogList(data){
 }
 
 // 部落格專區
-function showBlogList(data){
-  $('table').remove()
-  $('.page-number-list').remove()
-  let archive = $('<table id="archive" class="table table-striped"><thead class="table-wrap"></thead></table>')
-  $('article').append(archive)
+function showBlogList(a,data){
+  clean()
+  $('article').append('<table id="archive" class="table table-striped"><thead class="table-wrap"><tbody></tbody></thead></table>')
+  $('article').append('<div class="author-page-number-list"></div>')
   $('.table-wrap').append('<tr class="table-info"><td scope="col">作者</td><td scope="col">部落格網址</td></tr>')
-  for (let i = 0; i < data.length; i +=1){
+  for (let i = a*20; i < Math.min(a+20, data.length); i +=1){
     let row = $('<tr></tr>')
     row.append(`<td><a href='${data[i].url}'>${data[i].name}</a></td>`)
     row.append(`<td><span class='blog-url'>${data[i].url}</span></td>`)
-    $('.table-wrap').append(row)
+    $('tbody').append(row)
+  }
+  let page_num = Math.ceil(data.length / 20)
+  for (let i = 0; i < page_num; i += 1){
+    $('.author-page-number-list').append(`<button id=authorpage_${i} class="author_page btn btn-outline-info">${i+1}</button>`)
   }
 }
 // 部落格連到文章內容
@@ -141,16 +141,16 @@ function articleByBlog(e){
     }
   }
   clean()
-  let archive = $('<table id="archive" class="table table-striped"><thead class="table-wrap"></thead></table>')
+  let archive = $('<table id="archive" class="table table-striped"><thead class="table-wrap"><tbody></tbody</thead></table>')
   $('article').append(archive)
   $('.table-wrap').append('<tr class="table-info"><td scope="col">時間</td><td scope="col">標題</td></tr>')
   for (let i = 0; i < result.length; i +=1){
     let row = $('<tr></tr>')
     row.append(`<td>${result[i].time}</td>`)
     row.append(`<td><a href='${result[i].url}'>${result[i].title}</a></td>`)
-    $('.table-wrap').append(row)
+    $('tbody').append(row)
   }
-  $('article').append('<button class="back2author btn btn-outline-info">回上一頁</button>')
+  $('article').append('<button class="back2author btn btn-outline-info">回作者列表</button>')
 }
 
 // 事件監聽
@@ -159,7 +159,7 @@ $('.article-list').click(function(){
   renderAll(0,sortdata)
 })
 // 文章列表換頁
-$('article').delegate('button','click',function(e){
+$('article').delegate('.article_page','click',function(e){
   let num = e.target.id.split('_')[1]
   renderAll(num,sortdata)
 })
@@ -172,7 +172,7 @@ $('.search-botton').click(function(){
 })
 // 作者專區
 $('.author-list').click(function(){
-  showBlogList(blogList)
+  showBlogList(0,blogList)
 })
 // 作者專區連結個人文章
 $('article').delegate('.blog-url','click',function(e){
@@ -180,5 +180,10 @@ $('article').delegate('.blog-url','click',function(e){
 })
 // 個人文章區回到作者專區
 $('article').delegate('.back2author','click',function(){
-  showBlogList(blogList)
+  showBlogList(0,blogList)
+})
+// 文章列表換頁
+$('article').delegate('.author_page','click',function(e){
+  let num = e.target.id.split('_')[1]
+  showBlogList(num,blogList)
 })

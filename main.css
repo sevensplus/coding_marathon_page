@@ -11,6 +11,7 @@
 }
 article{
     font-family: '微軟正黑體';
+    word-break: break-all;
 }
 .bar{
     display: flex;
@@ -51,3 +52,6 @@ article{
 .back2author{
     margin: 0 auto;
 }
+tr > td:first-child{
+    width: 20%;
+}    
