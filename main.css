@@ -1,13 +1,12 @@
 .container{
     width: 90%;
-    margin: auto;
+    margin: 10px auto;
 }
 .title{
     text-align: center;
     font-size: 28px;
     font-weight: bold;
     font-family: '微軟正黑體';
-    margin-top: 30px;
 }
 article{
     font-family: '微軟正黑體';

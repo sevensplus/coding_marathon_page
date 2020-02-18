@@ -49,14 +49,14 @@ function renderAll(a,data){
   $('article').append('<table id="archive" class="table table-striped"><thead class="table-wrap"></thead><tbody></tbody></table>')
   $('article').append('<div class="page-number-list"></div>')
   $('.table-wrap').append('<tr class="table-info"><th scope="col">時間</th><th scope="col">標題</th></tr>')
-  let num = a * 20
-  for (let i = num; i < Math.min(num + 20, data.length); i += 1){
+  let num = a * 15
+  for (let i = num; i < Math.min(num + 15, data.length); i += 1){
     let row = $('<tr></tr>')
     row.append(`<td>${data[i].time}</td>`)
-    row.append(`<td><a href='${data[i].blogList[0].url}'>${data[i].blogList[0].title}</a></td>`)
+    row.append(`<td><a href='${data[i].blogList[0].url}' target="_blank">${data[i].blogList[0].title}</a></td>`)
     $('tbody').append(row)  
   }
-  let page_num = Math.ceil(data.length / 20)
+  let page_num = Math.ceil(data.length / 15)
   for (let i = 0; i < page_num; i += 1){
     $('.page-number-list').append(`<button id=page_${i} class="article_page btn btn-outline-info">${i+1}</button>`)
   }
@@ -85,7 +85,7 @@ function renderSearch(data){
   for (let i = 0; i < data.length; i += 1){
     let row = $('<tr></tr>')
     row.append(`<td>${data[i].time}</td>`)
-    row.append(`<td><a href='${data[i].url}'>${data[i].title}</a></td>`)
+    row.append(`<td><a href='${data[i].url}' target="_blank">${data[i].title}</a></td>`)
     $('tbody').append(row)
   }
 }
@@ -114,13 +114,13 @@ function showBlogList(a,data){
   $('article').append('<table id="archive" class="table table-striped"><thead class="table-wrap"><tbody></tbody></thead></table>')
   $('article').append('<div class="author-page-number-list"></div>')
   $('.table-wrap').append('<tr class="table-info"><td scope="col">作者</td><td scope="col">部落格網址</td></tr>')
-  for (let i = a*20; i < Math.min(a+20, data.length); i +=1){
+  for (let i = a*15; i < Math.min(a+15, data.length); i +=1){
     let row = $('<tr></tr>')
     row.append(`<td><a href='${data[i].url}'>${data[i].name}</a></td>`)
     row.append(`<td><span class='blog-url'>${data[i].url}</span></td>`)
     $('tbody').append(row)
   }
-  let page_num = Math.ceil(data.length / 20)
+  let page_num = Math.ceil(data.length / 15)
   for (let i = 0; i < page_num; i += 1){
     $('.author-page-number-list').append(`<button id=authorpage_${i} class="author_page btn btn-outline-info">${i+1}</button>`)
   }
@@ -147,7 +147,7 @@ function articleByBlog(e){
   for (let i = 0; i < result.length; i +=1){
     let row = $('<tr></tr>')
     row.append(`<td>${result[i].time}</td>`)
-    row.append(`<td><a href='${result[i].url}'>${result[i].title}</a></td>`)
+    row.append(`<td><a href='${result[i].url}' target="_blank">${result[i].title}</a></td>`)
     $('tbody').append(row)
   }
   $('article').append('<button class="back2author btn btn-outline-info">回作者列表</button>')
