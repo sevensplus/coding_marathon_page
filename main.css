@@ -51,6 +51,16 @@ article{
 .back2author{
     margin: 0 auto;
 }
-tr > td:first-child{
-    width: 20%;
-}    
+.authorpage_author{
+    width: 15%;
+} 
+.authorpage_num{
+    width: 10%;
+    text-align: center;
+}
+.article_page_time{
+    width: 18%;
+}
+.authorpage_author{
+    width: 13%;
+}
